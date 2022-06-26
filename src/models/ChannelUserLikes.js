@@ -1,29 +1,25 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const database = require('../config/database');
 
-const User = database.define('users', {
+const ChannelUserLikes = database.define('channel_user_likes', {
     id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true
     },
-    name: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    email: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    password: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    role_id: {
+    channel_id: {
         type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    like: {
+        type: DataTypes.BOOLEAN,
         allowNull: false
     }
 })
 
-module.exports = User;
+module.exports = ChannelUserLikes;

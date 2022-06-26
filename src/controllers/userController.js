@@ -30,7 +30,7 @@ const show = async (req, res) => {
 
 const create = async (req, res) => {
     try {
-        const { name, email, password, role_id } = req.body
+        const { name, email, password } = req.body
 
         const user = await User.findOne({ where: { email: email } })
 
@@ -38,20 +38,12 @@ const create = async (req, res) => {
             return res.status(422).json({ message: `User ${email} already exists` })
         }
 
-        if (role_id) {
-            const role = await SystemRole.findByPk(role_id)
-
-            if (!role) {
-                return res.status(422).json({ message: `Role ${role_id} does not exists` })
-            }
-        }
-
         const encryptedPassword = auth.createPasswordHash(password)
         const newUser = await User.create({
             name: name,
             email: email,
             password: encryptedPassword,
-            role_id: role_id
+            role_id: 2
         })
         return res.status(201).json(newUser)
     } catch (err) {

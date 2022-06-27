@@ -1,5 +1,6 @@
 # news-api
-# Servidor Node para postgreSQL
+## Servidor Node para postgreSQL
+## Especificação das rotas: https://docs.google.com/document/d/1VHiDCGTCgzx8081Z1Logq4OOavbWhDE6kRk8bL7EVOA/edit?usp=sharing
 
 # Para rodar siga os seguintes passos:
 

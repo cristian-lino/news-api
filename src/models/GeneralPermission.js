@@ -1,5 +1,5 @@
 const { Sequelize, DataTypes } = require('sequelize');
-const database = require('../config/database');
+const database = require('../database/index');
 
 const GeneralPermission = database.define('general_permissions', {
     id: {

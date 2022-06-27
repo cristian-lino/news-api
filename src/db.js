@@ -1,4 +1,4 @@
-const database = require('./config/database');
+const database = require('./database/index');
 const auth =  require('./services/auth')
 
 const User = require('./models/User');
@@ -19,17 +19,21 @@ const syncdb = async () => {
 const createSomeData = async () => {
     try {
         const systemRole1 = await SystemRole.create({
-            name: 'Administrador',
+            id: 1,
+            name: 'Administrador'
         })
         const systemRole2 = await SystemRole.create({
-            name: 'Usuário comum',
+            id: 2,
+            name: 'Usuário comum'
         })
         const systemRole3 = await SystemRole.create({
-            name: 'Criador de conteúdo',
+            id: 3,
+            name: 'Criador de conteúdo'
         })
         
     
         const user = await User.create({
+            id: 1,
             name: 'Admin',
             email: 'admin@admin.com',
             password: auth.createPasswordHash('admin'),
@@ -37,6 +41,7 @@ const createSomeData = async () => {
         })
         
         const homePermission1 = await GeneralPermission.create({
+            id: 1,
             screen: 'HOME',
             allow_read: true,
             allow_create: true,
@@ -45,6 +50,7 @@ const createSomeData = async () => {
             role_id: 1
         })
         const homePermission2 = await GeneralPermission.create({
+            id: 2,
             screen: 'HOME',
             allow_read: true,
             allow_create: false,
@@ -53,6 +59,7 @@ const createSomeData = async () => {
             role_id: 2
         })
         const homePermission3 = await GeneralPermission.create({
+            id: 3,
             screen: 'HOME',
             allow_read: true,
             allow_create: true,
@@ -62,6 +69,7 @@ const createSomeData = async () => {
         })
         
         const channelPermission1 = await GeneralPermission.create({
+            id: 4,
             screen: 'CHANNEL',
             allow_read: true,
             allow_create: true,
@@ -70,6 +78,7 @@ const createSomeData = async () => {
             role_id: 1
         })
         const channelPermission2 = await GeneralPermission.create({
+            id: 5,
             screen: 'CHANNEL',
             allow_read: true,
             allow_create: false,
@@ -78,6 +87,7 @@ const createSomeData = async () => {
             role_id: 2
         })
         const channelPermission3 = await GeneralPermission.create({
+            id: 6,
             screen: 'CHANNEL',
             allow_read: true,
             allow_create: true,
@@ -86,6 +96,7 @@ const createSomeData = async () => {
             role_id: 3
         })
         const generalPermission5 = await GeneralPermission.create({
+            id: 7,
             screen: 'USER_MANAGEMENT',
             allow_read: true,
             allow_create: true,

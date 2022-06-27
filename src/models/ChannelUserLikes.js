@@ -1,5 +1,5 @@
 const { Sequelize, DataTypes } = require('sequelize');
-const database = require('../config/database');
+const database = require('../database/index');
 
 const ChannelUserLikes = database.define('channel_user_likes', {
     id: {

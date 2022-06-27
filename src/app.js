@@ -1,5 +1,7 @@
 const express = require('express')
+const cors = require('cors')
 const bodyParser = require('body-parser')
+const middleware = require('./middlewares/auth')
 
 const UsersController = require('./controllers/UserController')
 const SystemRolesController = require('./controllers/SystemRoleController')
@@ -16,9 +18,13 @@ app.use(
         extended: true,
     })
 )
+app.use(cors())
 
 //routes
 app.post('/auth', SessionController.create)
+
+app.use(middleware.auth)
+
 app.post('/users', UsersController.create)
 app.post('/channel', ChannelController.create)
 app.get('/channel/:id', ChannelController.show)

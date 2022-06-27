@@ -1,4 +1,6 @@
 const auth =  require('../services/auth')
+const authConfig = require('../config/auth');
+const jwt = require('jsonwebtoken');
 
 const User = require('../models/User');
 const GeneralPermission = require('../models/GeneralPermission');
@@ -23,7 +25,16 @@ const create = async (req, res) => {
         const p = await GeneralPermission.findAll()
         const permissions = p.filter(a => a.role_id === user.role_id)
 
-        return res.json({id, email, name, role, permissions})
+        return res.json({
+            id,
+            email,
+            name,
+            role,
+            permissions,
+            token: jwt.sign({id}, authConfig.secret, {
+                expiresIn: authConfig.expiresIn
+            })
+        })
     } catch (error) {
         throw error
     }

@@ -5,18 +5,15 @@ const ChannelUserLikes = require('../models/ChannelUserLikes');
 
 const index = async (req, res) => {
     try {
-        const channels = await Channel.findAll()
-        res.status(200).json(channels)
-    } catch (err) {
-        console.log(err)
-        return res.status(500).json({ error: "Internal server error" })
-    }
-}
+        var url = require('url');
+        var url_parts = url.parse(req.url, true);
+        var query = url_parts.query;
 
-const indexUser = async (req, res) => {
-    try {
-        const { userId } = req.params
+        const userId = query.userId
 
+        if (!userId) {
+            return res.status(500).json({ message: `invalid data` })
+        }
         const user = await User.findByPk(userId)
 
         if (!user) {
@@ -139,4 +136,4 @@ const destroy = async (req, res) => {
     }
 }
 
-module.exports = {index, show, create, update, destroy, indexUser}
+module.exports = {index, show, create, update, destroy}

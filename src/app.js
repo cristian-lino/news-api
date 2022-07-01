@@ -29,7 +29,7 @@ app.post('/users', UsersController.create)
 app.post('/channel', ChannelController.create)
 app.get('/channel/:id', ChannelController.show)
 app.put('/channelUserLike/:channelId', ChannelUserLikesController.updateLike)
-app.get('/channel/loggedUser/:userId', ChannelController.indexUser)
+app.get('/channel', ChannelController.index)
 app.post('/news', NewsController.create)
 app.get('/users', UsersController.index)
 

@@ -32,5 +32,6 @@ app.put('/channelUserLike/:channelId', ChannelUserLikesController.updateLike)
 app.get('/channel', ChannelController.index)
 app.post('/news', NewsController.create)
 app.get('/users', UsersController.index)
+app.get('/users/:id', UsersController.show)
 
 module.exports = app;

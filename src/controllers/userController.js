@@ -43,7 +43,7 @@ const create = async (req, res) => {
             name: name,
             email: email,
             password: encryptedPassword,
-            role_id: 2
+            role_id: 3
         })
         return res.status(201).json(newUser)
     } catch (err) {

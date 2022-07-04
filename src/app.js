@@ -22,10 +22,10 @@ app.use(cors())
 
 //routes
 app.post('/auth', SessionController.create)
+app.post('/users', UsersController.create)
 
 app.use(middleware.auth)
 
-app.post('/users', UsersController.create)
 app.post('/channel', ChannelController.create)
 app.get('/channel/:id', ChannelController.show)
 app.put('/channelUserLike/:channelId', ChannelUserLikesController.updateLike)

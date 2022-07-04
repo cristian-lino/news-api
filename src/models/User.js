@@ -4,7 +4,6 @@ const database = require('../database/index');
 const User = database.define('users', {
     id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
         autoIncrement: true,
         primaryKey: true
     },

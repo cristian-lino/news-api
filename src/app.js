@@ -25,10 +25,8 @@ app.use(middleware.auth);
 
 app.post('/channel', ChannelController.create)
 app.post('/news', NewsController.create)
-
-app.get('/channel/:id', ChannelController.show)
+app.put('/news/:id', NewsController.update)
 app.get('/channel', ChannelController.index)
-app.get('/users', UsersController.index)
-app.get('/users/:id', UsersController.show)
+app.get('/channel/:id', ChannelController.show)
 
 module.exports = app;

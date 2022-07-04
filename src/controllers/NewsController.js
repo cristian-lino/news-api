@@ -1,33 +1,8 @@
 const News = require('../models/News');
 const Channel = require('../models/Channel');
 const User = require('../models/User');
+const NewsUserLike = require('../models/NewsUserLike');
 const Utils = require('../utils/urlToQuery')
-
-const index = async (req, res) => {
-    try {
-        const news = await News.findAll()
-        res.status(200).json(news)
-    } catch (err) {
-        console.log(err)
-        return res.status(500).json({ error: "Internal server error" })
-    }
-}
-
-const show = async (req, res) => {
-    try {
-        const { id } = req.params
-        const news = await News.findByPk(id)
-
-        if (!news) {
-            return res.status(404).json()
-        }
-
-        return res.json(news)
-    } catch (err) {
-        console.log(err)
-        return res.status(500).json({ error: "Internal server error" })
-    }
-}
 
 const create = async (req, res) => {
     try {
@@ -67,23 +42,40 @@ const create = async (req, res) => {
 const update = async (req, res) => {
     try {
         const { id } = req.params
-        const { message, hasImage, image_path, user_id } = req.body
+        const query = Utils.urlToQuery(req.url)
+
+        const userId = query.userId
+        if (!userId) {
+            return res.status(500).json({ message: `invalid data` })
+        }
+
+        const user = await User.findByPk(userId)
+        if (!user) {
+            return res.status(422).json({ message: `user ${userId} does not exists` })
+        }
 
         const news = await News.findByPk(id)
-
         if (!news) {
             return res.status(404).json()
         }
 
-        news.set({
-            message: message,
-            hasImage: hasImage,
-            image_path: image_path,
-            user_id: user_id
-        })
+        const [row, created] = await NewsUserLike.findOrCreate({
+            where: { news_id: id, user_id: userId },
+            defaults: {
+                news_id: id,
+                user_id: userId,
+                channel_id: news.channel_id,
+                like: true
+            }
+        });
 
-        await news.save()
-        
+        if (!created) {
+            row.set({
+                like: !row.like,
+            })
+            await row.save()
+        }
+
         return res.status(200).json()
     } catch (err) {
         console.log(err)
@@ -91,23 +83,4 @@ const update = async (req, res) => {
     }
 }
 
-const destroy = async (req, res) => {
-    try {
-        const { id } = req.params
-
-        const news = await News.findByPk(id)
-
-        if (!news) {
-            return res.status(404).json()
-        }
-
-        await news.destroy()
-        
-        return res.status(200).json()
-    } catch (err) {
-        console.log(err)
-        return res.status(500).json({ error: "Internal server error" })
-    }
-}
-
-module.exports = {index, show, create, update, destroy}
+module.exports = { create, update }

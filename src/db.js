@@ -5,6 +5,7 @@ const User = require("./models/User");
 const SystemRole = require("./models/SystemRole");
 const Channel = require("./models/Channel");
 const News = require("./models/News");
+const NewsUserLike = require("./models/NewsUserLike");
 
 const syncDb = async () => {
   try {

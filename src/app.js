@@ -7,6 +7,7 @@ const UsersController = require("./controllers/UserController");
 const SessionController = require("./controllers/SessionController");
 const ChannelController = require("./controllers/ChannelController");
 const NewsController = require("./controllers/NewsController");
+const CreatorRequisitionController = require("./controllers/CreatorRequisitionController");
 
 const app = express();
 app.use(bodyParser.json());
@@ -29,5 +30,8 @@ app.put('/news/:id', NewsController.update)
 app.get('/channel', ChannelController.index)
 app.get('/channel/:id', ChannelController.show)
 app.get('/users/:id', UsersController.show)
+app.post('/requisitions', CreatorRequisitionController.create)
+app.get('/requisitions', CreatorRequisitionController.index)
+app.put('/requisitions/:id', CreatorRequisitionController.update)
 
 module.exports = app;

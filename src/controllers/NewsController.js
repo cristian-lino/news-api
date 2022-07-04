@@ -1,6 +1,7 @@
 const News = require('../models/News');
 const Channel = require('../models/Channel');
 const User = require('../models/User');
+const Utils = require('../utils/urlToQuery')
 
 const index = async (req, res) => {
     try {
@@ -30,24 +31,31 @@ const show = async (req, res) => {
 
 const create = async (req, res) => {
     try {
-        const { message, hasImage, image_path, user_id, channel_id } = req.body
+        const { message, image_path } = req.body
+        const query = Utils.urlToQuery(req.url)
+        const userId = query.userId
+        const channelId = query.channelId
 
-        const user = await User.findByPk(user_id)
-        if (!user) {
-            return res.status(422).json({ message: `user ${user_id} does not exists` })
+        if (!userId || !channelId) {
+            return res.status(500).json({ message: `invalid query values` })
         }
 
-        const channel = await Channel.findByPk(channel_id)
+        const user = await User.findByPk(userId)
+        if (!user) {
+            return res.status(422).json({ message: `user ${userId} does not exists` })
+        }
+
+        const channel = await Channel.findByPk(channelId)
         if (!channel) {
-            return res.status(422).json({ message: `channel ${channel_id} does not exists` })
+            return res.status(422).json({ message: `channel ${channelId} does not exists` })
         }
 
         const newNews = await News.create({
             message: message,
-            hasImage: hasImage,
+            hasImage: image_path ? true : false,
             image_path: image_path,
-            user_id: user_id,
-            channel_id: channel_id
+            user_id: userId,
+            channel_id: channelId
         })
         return res.status(201).json(newNews)
     } catch (err) {

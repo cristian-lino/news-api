@@ -4,7 +4,6 @@ const database = require('../database/index');
 const Channel = database.define('channel', {
     id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
         autoIncrement: true,
         primaryKey: true
     },

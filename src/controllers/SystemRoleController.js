@@ -1,5 +1,4 @@
 const SystemRole = require('../models/SystemRole');
-const GeneralPermission = require('../models/GeneralPermission');
 const User = require('../models/User');
 
 const index = async (req, res) => {
@@ -82,12 +81,7 @@ const destroy = async (req, res) => {
             return res.status(404).json()
         }
 
-        const permissions = await GeneralPermission.findAll({ where: { role_id: id } })
         const users = await User.findAll({ where: { role_id: id } })
-
-        for await (const permission of permissions) {
-            permission.destroy()
-        }
 
         for await (const user of users) {
             user.set({

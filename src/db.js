@@ -3,6 +3,8 @@ const auth = require("./services/auth");
 
 const User = require("./models/User");
 const SystemRole = require("./models/SystemRole");
+const Channel = require("./models/Channel");
+const News = require("./models/News");
 
 const syncDb = async () => {
   try {

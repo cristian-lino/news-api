@@ -2,6 +2,7 @@ const Channel = require('../models/Channel');
 const User = require('../models/User');
 const News = require('../models/News');
 const ChannelUserLikes = require('../models/ChannelUserLikes');
+const Utils = require('../utils/urlToQuery')
 
 const index = async (req, res) => {
     try {
@@ -71,18 +72,26 @@ const show = async (req, res) => {
 
 const create = async (req, res) => {
     try {
-        const { title, description, user_id } = req.body
+        const { title, description } = req.body
 
-        const user = await User.findByPk(user_id)
+        const query = Utils.urlToQuery(req.url)
+
+        const userId = query.userId
+
+        if (!userId) {
+            return res.status(500).json({ message: `invalid data` })
+        }
+
+        const user = await User.findByPk(userId)
 
         if (!user) {
-            return res.status(422).json({ message: `user ${user_id} does not exists` })
+            return res.status(422).json({ message: `user ${userId} does not exists` })
         }
 
         const newChannel = await Channel.create({
             title: title,
             description: description,
-            user_id: user_id
+            user_id: userId
         })
 
         return res.status(201).json(newChannel)

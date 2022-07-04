@@ -25,4 +25,20 @@ const create = async (req, res) => {
     }
 }
 
-module.exports = { create }
+const show = async (req, res) => {
+    try {
+        const { id } = req.params
+        const user = await User.findByPk(id)
+
+        if (!user) {
+            return res.status(404).json()
+        }
+
+        return res.json(user)
+    } catch (err) {
+        console.log(err)
+        return res.status(500).json({ error: "Internal server error" })
+    }
+}
+
+module.exports = { create, show }

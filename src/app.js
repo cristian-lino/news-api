@@ -28,5 +28,6 @@ app.post('/news', NewsController.create)
 app.put('/news/:id', NewsController.update)
 app.get('/channel', ChannelController.index)
 app.get('/channel/:id', ChannelController.show)
+app.get('/users/:id', UsersController.show)
 
 module.exports = app;

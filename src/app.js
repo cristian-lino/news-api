@@ -28,6 +28,7 @@ app.post("/channel", ChannelController.create);
 app.delete("/channel/:id", ChannelController.destroy);
 app.post("/news", NewsController.create);
 app.put("/news/:id", NewsController.update);
+app.delete("/news/:id", NewsController.destroy);
 app.get("/channel", ChannelController.index);
 app.get("/channel/:id", ChannelController.show);
 app.get("/users/:id", UsersController.show);

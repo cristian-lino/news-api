@@ -148,19 +148,35 @@ const create = async (req, res) => {
 
 const destroy = async (req, res) => {
   const query = Utils.urlToQuery(req.url);
-
   const userId = query.userId;
 
   if (!userId) {
     return res.status(500).json({ message: `invalid data` });
   }
 
-  const user = await User.findByPk(userId);
+  const channelId = req.params.id;
 
-  if (user?.role_id === 1) {
+  const channel = await Channel.findByPk(channelId);
+  if (!channel) {
+    return res.status(404).json();
+  }
+
+  const channelCreator = await User.findByPk(channel.user_id);
+  if (!channelCreator) {
+    return res
+      .status(422)
+      .json({ message: `user ${channel.user_id} does not exists` });
+  }
+
+  const user = await User.findByPk(userId);
+  if (!user) {
+    return res.status(404).json();
+  }
+
+  if (user?.role_id === 1 || channelCreator.id.toString() === userId) {
     await Channel.destroy({
       where: {
-        id: req.params.id,
+        id: channelId,
       },
     })
       .then(function (deletedRecord) {
@@ -173,6 +189,8 @@ const destroy = async (req, res) => {
       .catch(function (error) {
         res.status(500).json(error);
       });
+  } else {
+    res.status(404).json({ message: "Doesn't permission!" });
   }
 };
 

@@ -75,6 +75,7 @@ const show = async (req, res) => {
       });
 
       var aux = {
+        id: news.id,
         message: news.message,
         hasImage: news.hasImage,
         image_path: news.image_path,

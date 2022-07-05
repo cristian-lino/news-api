@@ -56,6 +56,13 @@ const show = async (req, res) => {
       return res.status(404).json();
     }
 
+    const channelCreator = await User.findByPk(channel.user_id);
+    if (!channelCreator) {
+      return res
+        .status(422)
+        .json({ message: `user ${channel.user_id} does not exists` });
+    }
+
     var data = [];
     const countNews = await News.findAll({ where: { channel_id: channel.id } });
 
@@ -74,6 +81,8 @@ const show = async (req, res) => {
         },
       });
 
+      const messageCreator = await User.findByPk(news.user_id);
+
       var aux = {
         id: news.id,
         message: news.message,
@@ -81,6 +90,10 @@ const show = async (req, res) => {
         image_path: news.image_path,
         likesAmount: countLikes.length,
         isLiked: row.like,
+        message_owner: {
+          id: messageCreator.id,
+          name: messageCreator.name,
+        },
       };
       data.push(aux);
     }
@@ -89,6 +102,10 @@ const show = async (req, res) => {
       title: channel.title,
       description: channel.description,
       messages: data,
+      channel_owner: {
+        id: channelCreator.id,
+        name: channelCreator.name,
+      },
     });
   } catch (err) {
     console.log(err);

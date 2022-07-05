@@ -146,4 +146,34 @@ const create = async (req, res) => {
   }
 };
 
-module.exports = { index, show, create };
+const destroy = async (req, res) => {
+  const query = Utils.urlToQuery(req.url);
+
+  const userId = query.userId;
+
+  if (!userId) {
+    return res.status(500).json({ message: `invalid data` });
+  }
+
+  const user = await User.findByPk(userId);
+
+  if (user?.role_id === 1) {
+    await Channel.destroy({
+      where: {
+        id: req.params.id,
+      },
+    })
+      .then(function (deletedRecord) {
+        if (deletedRecord === 1) {
+          res.status(200).json({ message: "Deleted successfully" });
+        } else {
+          res.status(404).json({ message: "record not found" });
+        }
+      })
+      .catch(function (error) {
+        res.status(500).json(error);
+      });
+  }
+};
+
+module.exports = { index, show, create, destroy };

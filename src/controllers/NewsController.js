@@ -115,7 +115,7 @@ const destroy = async (req, res) => {
 
     if (user?.role_id === 1 || news.user_id.toString() === userId) {
       await News.destroy({
-        where: { id, user_id: userId },
+        where: { id, user_id: news.user_id },
       }).then(function (deletedRecord) {
         if (deletedRecord === 1) {
           res.status(200).json({ message: "Deleted successfully" });
